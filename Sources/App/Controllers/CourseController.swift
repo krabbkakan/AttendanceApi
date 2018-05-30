@@ -1,10 +1,14 @@
 import Vapor
+import FluentMySQL
 
 struct CourseController: RouteCollection {
     func boot(router: Router) throws {
         let courseRoute = router.grouped("api", "courses")
         courseRoute.get(use: getAllHandler)
         courseRoute.post(use: createHandler)
+        courseRoute.get(Course.parameter, use: getHandler)
+        courseRoute.delete(Course.parameter, use: deleteHandler)
+        courseRoute.put(Course.parameter, use: updateHandler)
     }
     
     func getAllHandler(_ req: Request) throws -> Future<[Course]> {
@@ -26,7 +30,7 @@ struct CourseController: RouteCollection {
         }
     }
     
-    func updateNameHandler(_ req: Request) throws -> Future<Course> {
+    func updateHandler(_ req: Request) throws -> Future<Course> {
         return try flatMap(to: Course.self, req.parameters.next(Course.self), req.content.decode(Course.self)) { course, updatedCourse in
             course.name = updatedCourse.name
             course.numberOfLessons = updatedCourse.numberOfLessons

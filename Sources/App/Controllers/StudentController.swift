@@ -1,4 +1,5 @@
 import Vapor
+import FluentMySQL
 
 struct StudentController: RouteCollection {
     var courseEnrolled = Course(name: "Api:er", numberOfLessons: 10)
@@ -48,13 +49,13 @@ struct StudentController: RouteCollection {
         }
     }
     
-    func updateDidPassLessonsHandler(_ req: Request) throws -> Future<Student> {
-        return try flatMap(to: Student.self, req.parameters.next(Student.self), req.content.decode(Student.self)) { student, updatedStudent in
-            
-            student.didPass = updatedStudent.didPass
-            return student.save(on: req)
-        }
-    }
+//    func updateDidPassLessonsHandler(_ req: Request) throws -> Future<Student> {
+//        return try flatMap(to: Student.self, req.parameters.next(Student.self), req.content.decode(Student.self)) { student, updatedStudent in
+//            
+////            student.didPass = updatedStudent.didPass
+//            return student.save(on: req)
+//        }
+//    }
     
     
 }
